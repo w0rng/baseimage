@@ -10,3 +10,12 @@ Images `w0rng/baseimage:python-latest` и `ghcr.io/w0rng/baseimage/python:latest
 * запуск всех команд из под пользователя `app`
 * в качестве пакетного менеджера используется `uv`
 * установлен `bash` и `curl`
+
+
+## License
+
+This project includes work from the following project(s) licensed under the MIT License:
+
+- [umputun/baseimage](https://github.com/umputun/baseimage/tree/master)
+
+The original license is included in the LICENSE file.
