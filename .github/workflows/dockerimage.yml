@@ -1,0 +1,38 @@
+name: build
+
+on:
+  push:
+    branches: [ 'main' ]
+
+jobs:
+  build_python_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+
+      - name: build python
+        env:
+          GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUBPKG }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          USERNAME: ${{ github.actor }}
+          GITHUB_SHA: ${{ github.sha}}
+          GITHUB_REF: ${{ github.ref}}
+        run: |
+          ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
+          echo GITHUB_REF - $ref
+          echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
+          echo ${DOCKER_HUB_TOKEN} | docker login -u ${USERNAME} --password-stdin
+          docker buildx build --push --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            -t ghcr.io/${USERNAME}/baseimage/python:latest -t ${USERNAME}/baseimage:python-latest \
+            python.alpine -f python.alpine/Dockerfile
