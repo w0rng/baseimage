@@ -14,10 +14,6 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: "docker"
-    directory: "/base.alpine"
-    schedule:
-      interval: "monthly"
-  - package-ecosystem: "docker"
-    directory: "/build.go"
+    directory: "/python.alpine"
     schedule:
       interval: "monthly"
