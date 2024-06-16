@@ -5,18 +5,33 @@ LABEL org.opencontainers.image.authors="w0rng <me@w0rng.ru>"
 ENV TIME_ZONE=Europe/Moscow     \
     VIRTUAL_ENV=/home/app/.venv \
     TERM=xterm-color            \
-    PATH="/home/app/.local/bin:/home/app/.venv/bin:$PATH"
+    APP_USER=app                \
+    APP_UID=1001                \
+    DOCKER_GID=999
 
-RUN apk add --no-cache --update curl bash && \
-    echo "${TIME_ZONE}" > /etc/timezone && \
+COPY ./init.sh /init.sh
+COPY ./pip.sh /pip
+
+RUN chmod +x /init.sh /pip && \
+    echo "https://mirror.yandex.ru/mirrors/alpine/v3.20/main/" > /etc/apk/repositories && \
+    echo "https://mirror.yandex.ru/mirrors/alpine/v3.20/community/" >> /etc/apk/repositories && \
+    apk add --no-cache --update su-exec curl dumb-init && \
+    ln -s /sbin/su-exec /usr/local/bin/gosu && \
+    mkdir -p /home/$APP_USER && \
+    adduser -s /bin/sh -D -u $APP_UID $APP_USER && chown -R $APP_USER:$APP_USER /home/$APP_USER && \
+    delgroup ping && addgroup -g 998 ping && \
+    addgroup -g ${DOCKER_GID} docker && addgroup ${APP_USER} docker && \
+    mkdir -p /srv && chown -R $APP_USER:$APP_USER /srv && \
     cp /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime && \
-    date && \
-    addgroup -g 2000 app && \
-    adduser -u 2000 -G app -s /bin/bash -D app && \
+    echo "${TIME_ZONE}" > /etc/timezone && date && \
+    ln -s /usr/bin/dumb-init /sbin/dinit && \
     rm -rf /var/cache/apk/*
 
-USER app
-
 RUN pip install --upgrade --no-cache-dir pip setuptools uv && \
-    uv venv /home/app/.venv && \
-    echo 'alias pip="uv pip"' >> ~/.bashrc
+    uv venv /home/$APP_USER/.venv && \
+    rm /usr/local/bin/pip && \
+    mv /pip /usr/local/bin/pip
+
+ENV PATH="$PATH:/home/$APP_USER/.venv/bin"
+
+ENTRYPOINT ["/init.sh"]
