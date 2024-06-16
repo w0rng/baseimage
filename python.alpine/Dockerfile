@@ -1,6 +1,7 @@
 FROM python:3.12-alpine3.20
 
 LABEL org.opencontainers.image.authors="w0rng <me@w0rng.ru>"
+LABEL org.opencontainers.image.source="https://github.com/w0rng/baseimage/"
 
 ENV TIME_ZONE=Europe/Moscow     \
     VIRTUAL_ENV=/home/app/.venv \
@@ -32,6 +33,9 @@ RUN pip install --upgrade --no-cache-dir pip setuptools uv && \
     rm /usr/local/bin/pip && \
     mv /pip /usr/local/bin/pip
 
-ENV PATH="$PATH:/home/$APP_USER/.venv/bin"
+ENV PATH="/home/$APP_USER/.venv/bin:$PATH"
+
+WORKDIR /home/$APP_USER
 
 ENTRYPOINT ["/init.sh"]
+CMD ["python"]
