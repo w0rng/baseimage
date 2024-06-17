@@ -22,10 +22,10 @@ RUN chmod +x /init.sh /pip && \
     mkdir -p /app && chown -R $APP_USER:$APP_USER /app && \
     pip install --upgrade --no-cache-dir pip setuptools uv && \
     mkdir -p ${VIRTUAL_ENV} && chown -R $APP_USER:$APP_USER ${VIRTUAL_ENV} && \
-    python -c "import compileall; compileall.compile_path(maxlevels=10)" && \
     uv venv ${VIRTUAL_ENV} && \
     rm /usr/local/bin/pip && \
-    mv /pip /usr/local/bin/pip
+    mv /pip /usr/local/bin/pip && \
+    python -c "import compileall; compileall.compile_path(maxlevels=10, optimize=2)"
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 

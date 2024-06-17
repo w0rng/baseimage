@@ -4,7 +4,7 @@ _персональные docker images_
 
 ## python.alpine
 
-Images `w0rng/baseimage:python-latest` и `ghcr.io/w0rng/baseimage/python:latest`
+Images `w0rng/baseimage:python3.12-alpine-latest` и `ghcr.io/w0rng/baseimage/python3.12-alpine:latest`
 
 * `pip` заменен на `uv` (вы этого не заметите)
 * установлен `bash` и `curl`
@@ -12,12 +12,19 @@ Images `w0rng/baseimage:python-latest` и `ghcr.io/w0rng/baseimage/python:latest
 * Опционально запускает `/app/init.sh`, если это предусмотрено пользовательским контейнером.
 * Добавляет `app` пользователя (uid=1001).
 * добавлена минималистичная система инициализации [dumb-init](https://github.com/Yelp/dumb-init/)
+* скомпилированные python библиотеки 
 
 ### Настройки
 Во время выполнения можно указать следующие переменные:
 * `VIRTUAL_ENV` - дирректория виртуального окружения, по умолчанию `/venv`
 * `APP_UID` - UID внутреннего пользователя приложения, по умолчанию 1001
 * `TIME_ZONE` - таймзона контейнера, по умолчанию "Europe/Moscow"
+
+## python.debian
+Все тоже самое, но на основе `python3.12-slim`
+
+Images `w0rng/baseimage:python3.12-debian-latest` и `ghcr.io/w0rng/baseimage/python3.12-debian:latest`
+
 
 ## License
 
