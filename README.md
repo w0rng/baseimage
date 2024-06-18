@@ -2,9 +2,9 @@
 
 _персональные docker images_
 
-## python.alpine
+## python
 
-Images `w0rng/baseimage:python3.12-alpine-latest` и `ghcr.io/w0rng/baseimage/python3.12-alpine:latest`
+Images `w0rng/python:3.12` и `ghcr.io/w0rng/python:3.12`
 
 * `pip` заменен на `uv` (вы этого не заметите)
 * установлен `bash` и `curl`
@@ -19,12 +19,6 @@ Images `w0rng/baseimage:python3.12-alpine-latest` и `ghcr.io/w0rng/baseimage/py
 * `VIRTUAL_ENV` - дирректория виртуального окружения, по умолчанию `/venv`
 * `APP_UID` - UID внутреннего пользователя приложения, по умолчанию 1001
 * `TIME_ZONE` - таймзона контейнера, по умолчанию "Europe/Moscow"
-
-## python.debian
-Все тоже самое, но на основе `python3.12-slim`
-
-Images `w0rng/baseimage:python3.12-debian-latest` и `ghcr.io/w0rng/baseimage/python3.12-debian:latest`
-
 
 ## License
 

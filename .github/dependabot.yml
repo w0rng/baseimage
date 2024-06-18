@@ -14,6 +14,6 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: "docker"
-    directory: "/python.alpine"
+    directory: "/python.debian"
     schedule:
       interval: "monthly"
