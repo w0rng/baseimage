@@ -5,7 +5,7 @@ on:
     branches: [ 'main' ]
 
 jobs:
-  build_python_bebian:
+  build_python:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -35,5 +35,5 @@ jobs:
           echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
           echo ${DOCKER_HUB_TOKEN} | docker login -u ${USERNAME} --password-stdin
           docker buildx build --push --platform linux/amd64,linux/arm/v7 \
-            -t ghcr.io/${USERNAME}/python:${PYTHON_VERSION} -t ${USERNAME}/python:${PYTHON_VERSION} \
+            -t ghcr.io/${USERNAME}/baseimage/python:${PYTHON_VERSION} -t ${USERNAME}/python:${PYTHON_VERSION} \
             python -f python/Dockerfile
